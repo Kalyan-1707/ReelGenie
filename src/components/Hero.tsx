@@ -1,6 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { Clapperboard } from "lucide-react";
 
 const Hero = () => {
   return (
@@ -13,6 +14,24 @@ const Hero = () => {
           transition={{ duration: 0.8 }}
           className="text-center max-w-4xl mx-auto"
         >
+          <div className="flex items-center justify-center gap-2 mb-8">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.5 }}
+              className="bg-primary/10 p-3 rounded-xl"
+            >
+              <Clapperboard className="w-6 h-6 text-primary" />
+            </motion.div>
+            <motion.span
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary"
+            >
+              ReelGenie
+            </motion.span>
+          </div>
           <span className="px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-8 inline-block">
             AI-Powered Video Creation
           </span>
@@ -20,7 +39,7 @@ const Hero = () => {
             Create Stunning Short-Form Videos Effortlessly
           </h1>
           <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            ReelGenie uses AI to generate engaging scripts, voiceovers, and short-form videos – ready to publish in minutes!
+            <span className="font-semibold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">ReelGenie</span> uses AI to generate engaging scripts, voiceovers, and short-form videos – ready to publish in minutes!
           </p>
           <Button
             size="lg"
