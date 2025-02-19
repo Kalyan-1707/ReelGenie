@@ -43,7 +43,7 @@ const Hero = () => {
           </p>
           <Button
             size="lg"
-            className="bg-primary hover:bg-primary/90 text-white rounded-full px-8 py-6 text-lg transition-all duration-300 hover:shadow-xl animate-shine"
+            className="relative bg-primary hover:bg-primary/90 text-white rounded-full px-8 py-6 text-lg transition-all duration-300 hover:shadow-xl"
           >
             Try ReelGenie for Free
           </Button>
