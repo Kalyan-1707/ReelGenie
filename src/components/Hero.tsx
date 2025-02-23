@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Clapperboard } from "lucide-react";
+import { Clapperboard, Sparkles } from "lucide-react";
 
 const Hero = () => {
   return (
@@ -41,12 +41,47 @@ const Hero = () => {
           <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
             <span className="font-semibold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">ReelGenie</span> uses AI to generate engaging scripts, voiceovers, and short-form videos – ready to publish in minutes!
           </p>
-          <Button
-            size="lg"
-            className="relative bg-primary hover:bg-primary/90 text-white rounded-full px-8 py-6 text-lg transition-all duration-300 hover:shadow-xl"
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            className="relative inline-block"
           >
-            Try ReelGenie for Free
-          </Button>
+            {/* Animated ring */}
+            <motion.div
+              className="absolute -inset-4 rounded-full bg-primary/20 z-0"
+              animate={{
+                scale: [1, 1.1, 1],
+                opacity: [0.3, 0.5, 0.3]
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+            
+            {/* Sparkles */}
+            <motion.div
+              className="absolute -right-2 -top-2"
+              animate={{
+                rotate: [0, 15, -15, 0],
+                scale: [1, 1.2, 1]
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
+              <Sparkles className="w-6 h-6 text-primary" />
+            </motion.div>
+
+            <Button
+              size="lg"
+              className="relative bg-primary hover:bg-primary/90 text-white rounded-full px-8 py-6 text-lg transition-all duration-300 hover:shadow-xl z-10"
+            >
+              Try ReelGenie for Free
+            </Button>
+          </motion.div>
         </motion.div>
       </div>
     </section>
