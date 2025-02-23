@@ -1,0 +1,103 @@
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+import type { GeneratedScript } from "@/lib/gemini";
+import ScriptHero from "@/components/ScriptHero";
+import ScriptFrame from "@/components/ScriptFrame";
+
+const Script = () => {
+  const [generatedScript, setGeneratedScript] = useState<GeneratedScript | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedScript = localStorage.getItem('generatedScript');
+    if (storedScript) {
+      setGeneratedScript(JSON.parse(storedScript));
+    }
+  }, []);
+
+  const handleBackToPrompt = () => {
+    navigate('/prompt');
+  };
+
+  const handleFrameChange = (index: number, field: string, value: string) => {
+    const updatedScript = {...generatedScript};
+    updatedScript.frames[index][field] = value;
+    setGeneratedScript(updatedScript);
+    localStorage.setItem('generatedScript', JSON.stringify(updatedScript));
+  };
+
+  if (!generatedScript) {
+    return (
+      <main className="min-h-screen bg-background">
+        <div className="container mx-auto px-4 py-16">
+          <div className="text-center space-y-4">
+            <h2 className="text-2xl font-bold text-foreground">No script generated yet.</h2>
+            <Button 
+              onClick={handleBackToPrompt}
+              className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-all duration-300"
+            >
+              Back to Prompt
+            </Button>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  return (
+    <main className="min-h-screen bg-background relative overflow-hidden">
+      {/* Hero Section */}
+      <ScriptHero />
+      
+      {/* Main Content */}
+      <div className="container mx-auto px-4 pb-16">
+        {/* Script Info */}
+        <div className="max-w-4xl mx-auto mb-8">
+          <div className="flex justify-between items-center gap-4 flex-wrap">
+            <div>
+              <h2 className="text-2xl font-bold text-foreground">
+                {generatedScript.title}
+              </h2>
+              <p className="text-muted-foreground">
+                {generatedScript.duration}
+              </p>
+            </div>
+            
+            {/* Navigation Buttons */}
+            <div className="flex gap-4">
+              <Button
+                variant="outline"
+                onClick={handleBackToPrompt}
+                className="group transition-all duration-300"
+              >
+                <span className="mr-2 transform group-hover:-translate-x-1 transition-transform">←</span>
+                Back to Prompt
+              </Button>
+              <Button 
+                className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-all duration-300 animate-pulse"
+                onClick={() => navigate('/generate-frames')}
+              >
+                Generate Frames →
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* Frames */}
+        <div className="max-w-4xl mx-auto space-y-6">
+          {generatedScript.frames.map((frame, index) => (
+            <ScriptFrame
+              key={index}
+              index={index}
+              frame={frame}
+              onChange={(field, value) => handleFrameChange(index, field, value)}
+            />
+          ))}
+        </div>
+      </div>
+    </main>
+  );
+};
+
+export default Script;

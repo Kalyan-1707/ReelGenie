@@ -1,9 +1,11 @@
 
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Clapperboard, Sparkles } from "lucide-react";
 
 const Hero = () => {
+  const navigate = useNavigate();
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5">
       <div className="absolute inset-0 bg-grid-white/10 bg-grid-pattern" />
@@ -78,6 +80,7 @@ const Hero = () => {
             <Button
               size="lg"
               className="relative bg-primary hover:bg-primary/90 text-white rounded-full px-8 py-6 text-lg transition-all duration-300 hover:shadow-xl z-10"
+              onClick={() => navigate('/prompt')}
             >
               Try ReelGenie for Free
             </Button>

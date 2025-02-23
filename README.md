@@ -1,8 +1,5 @@
-# Welcome to your Lovable project
+# Welcome to ReelGenie
 
-## Project info
-
-**URL**: https://lovable.dev/projects/bb19757b-f6f2-4ea4-98d6-56c428b60a88
 
 ## How can I edit this code?
 
@@ -52,18 +49,17 @@ npm run dev
 
 ## What technologies are used for this project?
 
-This project is built with .
+This project is built with:
 
 - Vite
 - TypeScript
 - React
 - shadcn-ui
 - Tailwind CSS
+- React Router for navigation
+- React Query for data management
+- Google Generative AI for script generation
+- Framer Motion for animations
+- Sonner for toast notifications
 
-## How can I deploy this project?
 
-Simply open [Lovable](https://lovable.dev/projects/bb19757b-f6f2-4ea4-98d6-56c428b60a88) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
