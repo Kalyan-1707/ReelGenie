@@ -48,8 +48,8 @@ const Prompt = () => {
   });
 
   const onSubmit = async (data: ScriptFormData) => {
-    setIsLoading(true);
     try {
+      setIsLoading(true);
       const script = await generateScript(data.prompt);
       setIsLoading(false);
       // Store the generated script in localStorage to share between pages
@@ -95,17 +95,17 @@ const Prompt = () => {
               <FormField
                 control={form.control}
                 name="prompt"
-                rules={{ 
-                  required: "Please enter a prompt",
-                  minLength: {
-                    value: 5,
-                    message: "Prompt must be at least 5 characters"
-                  },
-                  maxLength: {
-                    value: 2000,
-                    message: "Prompt must not exceed 2000 characters"
-                  }
-                }}
+                // rules={{ 
+                //   required: "Please enter a prompt",
+                //   minLength: {
+                //     value: 5,
+                //     message: "Prompt must be at least 5 characters"
+                //   },
+                //   maxLength: {
+                //     value: 2000,
+                //     message: "Prompt must not exceed 2000 characters"
+                //   }
+                // }}
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>

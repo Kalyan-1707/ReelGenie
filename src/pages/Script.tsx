@@ -75,7 +75,7 @@ const Script = () => {
                 Back to Prompt
               </Button>
               <Button 
-                className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-all duration-300 animate-pulse"
+                className="bg-gradient-to-r from-primary to-secondary hover:opacity-90"
                 onClick={() => navigate('/generate-frames')}
               >
                 Generate Frames →
