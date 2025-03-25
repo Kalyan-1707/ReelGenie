@@ -1,12 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-
-if (!apiKey) {
-  throw new Error("Missing Gemini API key");
-}
-
-const genAI = new GoogleGenerativeAI(apiKey);
 
 export interface GeneratedFrame {
   visual: string;
@@ -118,13 +110,19 @@ Example:
  * @returns A ScriptData object containing the generated script.
  */
 export async function generateScript(prompt: string): Promise<ScriptData> {
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
-
-  const result = await model.generateContent([PROMPT_TEMPLATE, prompt]);
-  const response = await result.response;
-  const text = response.text();
+  const response = await fetch('http://localhost:3000/api/generate-script', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ prompt }),
+  });
   
-  return parseScriptData(text);
+  if (!response.ok) {
+    throw new Error('Failed to generate script');
+  }
+  
+  return await response.json();
 }
 
 /**
