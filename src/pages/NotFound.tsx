@@ -1,6 +1,13 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
+/**
+ * Handles rendering a 404 page when a user attempts to access a non-existent route.
+ * The component logs a console error with the attempted route's path and displays a
+ * basic 404 page with a link to return to the home route.
+ *
+ * @returns {JSX.Element}
+ */
 const NotFound = () => {
   const location = useLocation();
 

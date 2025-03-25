@@ -37,6 +37,16 @@ const exampleTemplates = [
   },
 ];
 
+/**
+ * A component that renders a form for users to input a prompt, which is used
+ * to generate a video script using AI. The form includes validation and
+ * submission handling. On successful script generation, the script is stored
+ * in localStorage and the user is navigated to the script page. Additionally,
+ * example templates are provided for users to quickly fill the prompt field.
+ *
+ * @returns A React component rendering the prompt input form and example templates.
+ */
+
 const Prompt = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -47,6 +57,13 @@ const Prompt = () => {
     },
   });
 
+  /**
+   * Handles the form submission, generating a script from the user-provided prompt,
+   * storing the generated script in localStorage, and navigating to the script page.
+   * If the generation fails, displays a toast error and sets isLoading to false.
+   *
+   * @param data - The form data, including the user-provided prompt.
+   */
   const onSubmit = async (data: ScriptFormData) => {
     try {
       setIsLoading(true);

@@ -82,10 +82,43 @@ Requirements:
 - Keep frames within 2-3 seconds
 - Ensure feasible visual descriptions
 
-Respond ONLY with the formatted JSON script, no additional text.`;
+Respond ONLY with the formatted JSON script, no additional text or backticks.
 
+Example:
+{
+  "title": "Example Title",
+  "duration": "10 Seconds",
+  "frames": [
+    {
+      "frame_number": 1,
+      "visual": "Scene description",
+      "voiceover": "Dialogue",
+      "music": "Music style",
+      "transition": "Transition"
+    }
+  ]
+}
+`;
+
+/**
+ * Generates a script based on the user-provided prompt. The script is generated
+ * by Gemini's generative AI model, which takes the prompt and a template as input.
+ * The generated script is then parsed and returned as a ScriptData object.
+ *
+ * The script is generated based on the following requirements:
+ * - Maintain consistent tone
+ * - Include camera movements
+ * - Add mood/atmosphere descriptions
+ * - Suggest background music
+ * - Include transition effects
+ * - Keep frames within 2-3 seconds
+ * - Ensure feasible visual descriptions
+ *
+ * @param prompt The user-provided prompt to generate the script from.
+ * @returns A ScriptData object containing the generated script.
+ */
 export async function generateScript(prompt: string): Promise<ScriptData> {
-  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
 
   const result = await model.generateContent([PROMPT_TEMPLATE, prompt]);
   const response = await result.response;
@@ -94,6 +127,12 @@ export async function generateScript(prompt: string): Promise<ScriptData> {
   return parseScriptData(text);
 }
 
+/**
+ * Parses a string of JSON data into a ScriptData object.
+ *
+ * @param data The JSON string to parse.
+ * @returns A ScriptData object containing the parsed data.
+ */
 const parseScriptData = (data: string): ScriptData => {
   const jsonData = JSON.parse(data);
   const scriptData: ScriptData = {
