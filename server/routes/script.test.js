@@ -13,3 +13,12 @@ describe('Generate Script Route', () => {
     expect(res.statusCode).toEqual(200);
   });
 });
+
+describe('Generate Image Route', () => {
+  it('should return a 200 status code', async () => {
+    const res = await request(app)
+      .post('/api/generate-image')
+      .send({ prompt: 'A futuristic image' });
+    expect(res.statusCode).toEqual(200);
+  });
+});
