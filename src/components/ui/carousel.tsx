@@ -60,6 +60,7 @@ const Carousel = React.forwardRef<
       {
         ...opts,
         axis: orientation === "horizontal" ? "x" : "y",
+        dragFree: true,
       },
       plugins
     )
@@ -164,6 +165,7 @@ const CarouselContent = React.forwardRef<
           className
         )}
         {...props}
+        data-drag-scroll="true"
       />
     </div>
   )

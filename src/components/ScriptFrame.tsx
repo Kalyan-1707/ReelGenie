@@ -22,10 +22,9 @@ const ScriptFrame = ({ index, frame, onChange, generatedImage }: ScriptFrameProp
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
-      whileHover={{ scale: 1.01 }}
       className="mr-6 w-full"
     >
-      <Card className="backdrop-blur-md bg-opacity-50 border border-primary/20 shadow-lg hover:shadow-primary/10 transition-all duration-300 w-full">
+      <Card className="backdrop-blur-md bg-opacity-50 border border-primary/20 shadow-lg transition-all duration-300 w-full">
         <CardHeader>
           <h3 className="text-xl font-semibold flex items-center gap-2">
             Frame {index + 1}
