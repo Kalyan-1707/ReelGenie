@@ -13,9 +13,10 @@ interface ScriptFrameProps {
     transition: string;
   };
   onChange: (field: string, value: string) => void;
+  generatedImage?: string;
 }
 
-const ScriptFrame = ({ index, frame, onChange }: ScriptFrameProps) => {
+const ScriptFrame = ({ index, frame, onChange, generatedImage }: ScriptFrameProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -31,6 +32,9 @@ const ScriptFrame = ({ index, frame, onChange }: ScriptFrameProps) => {
           </h3>
         </CardHeader>
         <CardContent className="space-y-4">
+          {/* Image Section */}
+          {generatedImage && <img src={generatedImage} alt={`Generated image for frame ${index + 1}`} className="mb-4 rounded-md" />}
+
           {/* Visual Section */}
           <div className="space-y-2">
             <Label className="flex items-center gap-2">

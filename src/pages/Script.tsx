@@ -13,6 +13,7 @@ import ScriptFrame from "@/components/ScriptFrame";
  */
 const Script = () => {
   const [generatedScript, setGeneratedScript] = useState<GeneratedScript | null>(null);
+  const [generatedImages, setGeneratedImages] = useState<string[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -89,9 +90,29 @@ const Script = () => {
                 <span className="mr-2 transform group-hover:-translate-x-1 transition-transform">←</span>
                 Back to Prompt
               </Button>
-              <Button 
+              <Button
                 className="bg-gradient-to-r from-primary to-secondary hover:opacity-90"
-                onClick={() => navigate('/generate-frames')}
+                onClick={async () => {
+                  if (!generatedScript) return;
+
+                  const images: string[] = [];
+                  for (const frame of generatedScript.frames) {
+                    const response = await fetch('http://localhost:3000/api/generate-image', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({ prompt: frame.visual }),
+                    });
+
+                    const data = await response.json();
+                    images.push(`data:image/png;base64,${data.data[0].b64_json}`);
+
+                    // Delay for 10 seconds to avoid rate limiting
+                    await new Promise(resolve => setTimeout(resolve, 10000));
+                  }
+                  setGeneratedImages(images);
+                }}
               >
                 Generate Frames →
               </Button>
@@ -107,6 +128,7 @@ const Script = () => {
               index={index}
               frame={frame}
               onChange={(field, value) => handleFrameChange(index, field, value)}
+              generatedImage={generatedImages[index]}
             />
           ))}
         </div>
