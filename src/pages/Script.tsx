@@ -14,6 +14,8 @@ import ScriptFrame from "@/components/ScriptFrame";
 const Script = () => {
   const [generatedScript, setGeneratedScript] = useState<GeneratedScript | null>(null);
   const [generatedImages, setGeneratedImages] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [statusMessage, setStatusMessage] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -92,11 +94,15 @@ const Script = () => {
               </Button>
               <Button
                 className="bg-gradient-to-r from-primary to-secondary hover:opacity-90"
+                disabled={isLoading}
                 onClick={async () => {
                   if (!generatedScript) return;
-
+                  setIsLoading(true);
+                  setStatusMessage('Generating Frames...');
                   const images: string[] = [];
-                  for (const frame of generatedScript.frames) {
+                  for (let i = 0; i < generatedScript.frames.length; i++) {
+                    const frame = generatedScript.frames[i];
+                    setStatusMessage(`Fetching image ${i + 1}/${generatedScript.frames.length}`);
                     const response = await fetch('http://localhost:3000/api/generate-image', {
                       method: 'POST',
                       headers: {
@@ -112,9 +118,11 @@ const Script = () => {
                     await new Promise(resolve => setTimeout(resolve, 10000));
                   }
                   setGeneratedImages(images);
+                  setIsLoading(false);
+                  setStatusMessage('');
                 }}
               >
-                Generate Frames →
+                {isLoading ? statusMessage : "Generate Frames →"}
               </Button>
             </div>
           </div>
