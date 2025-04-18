@@ -23,9 +23,9 @@ const ScriptFrame = ({ index, frame, onChange, generatedImage }: ScriptFrameProp
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
       whileHover={{ scale: 1.01 }}
-      className="mb-6"
+      className="mr-6 w-full"
     >
-      <Card className="backdrop-blur-md bg-opacity-50 border border-primary/20 shadow-lg hover:shadow-primary/10 transition-all duration-300">
+      <Card className="backdrop-blur-md bg-opacity-50 border border-primary/20 shadow-lg hover:shadow-primary/10 transition-all duration-300 w-full">
         <CardHeader>
           <h3 className="text-xl font-semibold flex items-center gap-2">
             Frame {index + 1}
@@ -33,7 +33,7 @@ const ScriptFrame = ({ index, frame, onChange, generatedImage }: ScriptFrameProp
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Image Section */}
-          {generatedImage && <img src={generatedImage} alt={`Generated image for frame ${index + 1}`} className="mb-4 rounded-md" />}
+          {generatedImage && <img src={generatedImage} alt={`Generated image for frame ${index + 1}`} className="mb-4 rounded-md w-full object-cover aspect-video" />}
 
           {/* Visual Section */}
           <div className="space-y-2">
