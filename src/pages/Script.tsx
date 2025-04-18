@@ -135,7 +135,7 @@ const Script = () => {
         </div>
 
         {/* Frames */}
-        <Carousel className="w-full mx-auto">
+        <Carousel className="w-4/5 mx-auto">
           <CarouselContent>
             {generatedScript.frames.map((frame, index) => (
               <CarouselItem key={index} className="w-full flex justify-center">
