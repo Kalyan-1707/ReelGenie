@@ -112,17 +112,17 @@ const Prompt = () => {
               <FormField
                 control={form.control}
                 name="prompt"
-                // rules={{ 
-                //   required: "Please enter a prompt",
-                //   minLength: {
-                //     value: 5,
-                //     message: "Prompt must be at least 5 characters"
-                //   },
-                //   maxLength: {
-                //     value: 2000,
-                //     message: "Prompt must not exceed 2000 characters"
-                //   }
-                // }}
+                rules={{ 
+                  required: "Please enter a prompt",
+                  minLength: {
+                    value: 10,
+                    message: "Prompt must be at least 10 characters"
+                  },
+                  maxLength: {
+                    value: 2000,
+                    message: "Prompt must not exceed 2000 characters"
+                  }
+                }}
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
@@ -131,11 +131,10 @@ const Prompt = () => {
                         transition={{ duration: 0.2 }}
                       >
                         <Textarea
-  placeholder="Describe your idea... AI will do the rest! ✨"
-  className="min-h-[200px] mb-2 bg-white/50 backdrop-blur-sm border-2 border-primary/20 rounded-xl focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-300"
-  {...field}
-/>
-
+                          placeholder="Describe your idea... AI will do the rest! ✨"
+                          className="min-h-[200px] mb-2 bg-white/50 backdrop-blur-sm border-2 border-primary/20 rounded-xl focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-300"
+                          {...field}
+                        />
                       </motion.div>
                     </FormControl>
                     <div className="text-sm text-gray-500 mb-2">
@@ -151,11 +150,10 @@ const Prompt = () => {
                 whileTap={{ scale: 0.98 }}
               >
                 <Button
-  type="submit"
-  className="w-full mt-4 bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white rounded-xl h-12 text-lg font-semibold shadow-lg transition-all duration-300 relative overflow-hidden"
-  disabled={isLoading}
->
-
+                  type="submit"
+                  className="w-full mt-4 bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white rounded-xl h-12 text-lg font-semibold shadow-lg transition-all duration-300 relative overflow-hidden"
+                  disabled={isLoading}
+                >
                   <motion.div
                     className="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20"
                     animate={{
