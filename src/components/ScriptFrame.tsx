@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
@@ -37,15 +36,15 @@ const ScriptFrame = ({ index, frame, onChange, generatedImage }: ScriptFrameProp
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
-      className="w-full max-h-[calc(100vh-320px)] overflow-y-auto"
+      className="w-full max-h-[calc(100vh-200px)] overflow-y-auto"
     >
       <Card className="backdrop-blur-md bg-opacity-50 border border-primary/20 shadow-lg transition-all duration-300 w-full">
-        <CardHeader>
+        <CardHeader className="pb-2">
           <h3 className="text-xl font-semibold flex items-center gap-2">
             Frame {index + 1}
           </h3>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-3">
           {/* Image Section with Preview Dialog */}
           {generatedImage && (
             <div className="relative group">
@@ -55,7 +54,7 @@ const ScriptFrame = ({ index, frame, onChange, generatedImage }: ScriptFrameProp
                     <img 
                       src={generatedImage} 
                       alt={`Generated image for frame ${index + 1}`} 
-                      className="mb-4 rounded-md w-full h-48 object-cover transition-transform hover:scale-[1.02]"
+                      className="mb-2 rounded-md w-full h-40 object-cover transition-transform hover:scale-[1.02]"
                     />
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                       <span className="text-white text-sm">Click to preview</span>
@@ -82,7 +81,7 @@ const ScriptFrame = ({ index, frame, onChange, generatedImage }: ScriptFrameProp
           )}
 
           {/* Form Fields */}
-          <div className="space-y-4 max-h-[300px] overflow-y-auto">
+          <div className="space-y-3 max-h-[calc(100vh-400px)] overflow-y-auto">
             {/* Visual Section */}
             <div className="space-y-2">
               <Label className="flex items-center gap-2">

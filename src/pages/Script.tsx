@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import type { GeneratedScript } from "@/lib/gemini";
-import ScriptHero from "@/components/ScriptHero";
 import ScriptFrame from "@/components/ScriptFrame";
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 
@@ -70,13 +69,10 @@ const Script = () => {
 
   return (
     <main className="min-h-screen bg-background relative overflow-hidden flex flex-col">
-      {/* Hero Section */}
-      <ScriptHero />
-      
       {/* Main Content */}
-      <div className="container mx-auto px-4 flex-1 flex flex-col">
+      <div className="container mx-auto px-4 flex-1 flex flex-col h-screen">
         {/* Script Info */}
-        <div className="max-w-4xl mx-auto mb-4">
+        <div className="max-w-4xl mx-auto py-6">
           <div className="flex justify-between items-center gap-4 flex-wrap">
             <div>
               <h2 className="text-2xl font-bold text-foreground">
@@ -136,7 +132,7 @@ const Script = () => {
 
         {/* Frames */}
         <div className="flex-1 relative">
-          <Carousel className="w-4/5 mx-auto h-[calc(100vh-300px)]">
+          <Carousel className="w-3/5 mx-auto h-[calc(100vh-180px)]">
             <CarouselContent>
               {generatedScript?.frames.map((frame, index) => (
                 <CarouselItem key={index} className="flex justify-center items-start">
