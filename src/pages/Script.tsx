@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -68,11 +69,10 @@ const Script = () => {
   }
 
   return (
-    <main className="min-h-screen bg-background relative overflow-hidden flex flex-col">
-      {/* Main Content */}
-      <div className="container mx-auto px-4 flex-1 flex flex-col h-screen">
+    <main className="min-h-screen bg-background">
+      <section className="h-screen flex flex-col">
         {/* Script Info */}
-        <div className="max-w-4xl mx-auto py-6">
+        <div className="container mx-auto px-4 py-6">
           <div className="flex justify-between items-center gap-4 flex-wrap">
             <div>
               <h2 className="text-2xl font-bold text-foreground">
@@ -132,7 +132,7 @@ const Script = () => {
 
         {/* Frames */}
         <div className="flex-1 relative">
-          <Carousel className="w-3/5 mx-auto h-[calc(100vh-180px)]">
+          <Carousel className="w-3/5 mx-auto h-[calc(100vh-120px)]">
             <CarouselContent>
               {generatedScript?.frames.map((frame, index) => (
                 <CarouselItem key={index} className="flex justify-center items-start">
@@ -149,7 +149,7 @@ const Script = () => {
             <CarouselNext className="hover:bg-primary/10 hover:text-primary border-primary/20" />
           </Carousel>
         </div>
-      </div>
+      </section>
     </main>
   );
 };
