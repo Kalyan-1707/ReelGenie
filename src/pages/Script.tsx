@@ -69,21 +69,21 @@ const Script = () => {
   }
 
   return (
-    <main className="min-h-screen bg-background relative overflow-hidden">
+    <main className="min-h-screen bg-background relative overflow-hidden flex flex-col">
       {/* Hero Section */}
       <ScriptHero />
       
       {/* Main Content */}
-      <div className="container mx-auto px-4 pb-16">
+      <div className="container mx-auto px-4 flex-1 flex flex-col">
         {/* Script Info */}
-        <div className="max-w-4xl mx-auto mb-8">
+        <div className="max-w-4xl mx-auto mb-4">
           <div className="flex justify-between items-center gap-4 flex-wrap">
             <div>
               <h2 className="text-2xl font-bold text-foreground">
-                {generatedScript.title}
+                {generatedScript?.title}
               </h2>
               <p className="text-muted-foreground">
-                {generatedScript.duration}
+                {generatedScript?.duration}
               </p>
             </div>
             
@@ -92,7 +92,7 @@ const Script = () => {
               <Button
                 variant="outline"
                 onClick={handleBackToPrompt}
-                className="group transition-all duration-300"
+                className="group transition-all duration-300 hover:bg-primary/10 hover:text-primary border-primary/20"
               >
                 <span className="mr-2 transform group-hover:-translate-x-1 transition-transform">←</span>
                 Back to Prompt
@@ -135,22 +135,24 @@ const Script = () => {
         </div>
 
         {/* Frames */}
-        <Carousel className="w-4/5 mx-auto">
-          <CarouselContent>
-            {generatedScript.frames.map((frame, index) => (
-              <CarouselItem key={index} className="w-full flex justify-center">
-                <ScriptFrame
-                  index={index}
-                  frame={frame}
-                  onChange={(field, value) => handleFrameChange(index, field, value)}
-                  generatedImage={generatedImages[index]}
-                />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
+        <div className="flex-1 relative">
+          <Carousel className="w-4/5 mx-auto h-[calc(100vh-300px)]">
+            <CarouselContent>
+              {generatedScript?.frames.map((frame, index) => (
+                <CarouselItem key={index} className="flex justify-center items-start">
+                  <ScriptFrame
+                    index={index}
+                    frame={frame}
+                    onChange={(field, value) => handleFrameChange(index, field, value)}
+                    generatedImage={generatedImages[index]}
+                  />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="hover:bg-primary/10 hover:text-primary border-primary/20" />
+            <CarouselNext className="hover:bg-primary/10 hover:text-primary border-primary/20" />
+          </Carousel>
+        </div>
       </div>
     </main>
   );
