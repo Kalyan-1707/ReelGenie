@@ -11,10 +11,5 @@
       "src": "/api/(.*)",
       "dest": "index.js"
     }
-  ],
-  "environment": {
-    "FLUX_API_KEY": "@flux_api_key",
-    "GOOGLE_API_KEY": "@google_api_key",
-    "FRONTEND_URL": "@frontend_url"
-  }
+  ]
 }
