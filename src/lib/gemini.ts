@@ -1,5 +1,3 @@
-
-
 export interface GeneratedFrame {
   visual: string;
   voiceover: string;
@@ -110,19 +108,22 @@ Example:
  * @returns A ScriptData object containing the generated script.
  */
 export async function generateScript(prompt: string): Promise<ScriptData> {
-  const response = await fetch('http://localhost:3000/api/generate-script', {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+  const url = backendUrl + '/api/generate-script';
+  const response = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ prompt }),
   });
-  
+
   if (!response.ok) {
     throw new Error('Failed to generate script');
   }
-  
-  return await response.json();
+
+  const data = await response.json();
+  return data;
 }
 
 /**
