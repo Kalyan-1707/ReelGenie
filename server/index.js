@@ -36,4 +36,4 @@ if (process.env.NODE_ENV !== 'test') {
   server = app;
 }
 
-export { app, server };
+export default app;
