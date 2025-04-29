@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { generateScriptRoute, generateImageRoute } from './routes/script.js';
+import postTweet from './routes/twitter.js';
 
 dotenv.config();
 
@@ -34,6 +35,7 @@ app.use(express.json());
 // Routes
 app.use('/api', generateScriptRoute);
 app.use('/api', generateImageRoute);
+app.use('/twitter', postTweet);
 
 let server;
 if (process.env.NODE_ENV !== 'test') {
