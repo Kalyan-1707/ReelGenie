@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { generateScriptRoute, generateImageRoute } from './routes/script.js';
+
 dotenv.config();
 
 const app = express();
@@ -11,17 +12,24 @@ const allowedOrigins = [process.env.FRONTEND_URL];
 
 const corsOptions = {
   origin: function (origin, callback) {
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-      callback(null, true)
+    if (!origin || allowedOrigins.includes(origin.trim())) {
+      callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'))
+      callback(new Error('Not allowed by CORS'));
     }
-  }
-}
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
 
+// Apply CORS
 app.use(cors(corsOptions));
-app.use(express.json());
 
+// Handle preflight
+app.options('*', cors(corsOptions));
+
+app.use(express.json());
 
 // Routes
 app.use('/api', generateScriptRoute);
