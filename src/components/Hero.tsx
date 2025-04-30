@@ -79,10 +79,17 @@ const Hero = () => {
 
             <Button
               size="lg"
-              className="relative bg-primary hover:bg-primary/90 text-white rounded-full px-8 py-6 text-lg transition-all duration-300 hover:shadow-xl z-10"
+              className="relative bg-primary hover:bg-primary/90 text-white rounded-full px-8 py-6 text-lg transition-all duration-300 hover:shadow-xl z-10 mr-4"
               onClick={() => navigate('/prompt')}
             >
               Try ReelGenie for Free
+            </Button>
+            <Button
+              size="lg"
+              className="relative bg-secondary hover:bg-secondary/90 text-white rounded-full px-8 py-6 text-lg transition-all duration-300 hover:shadow-xl z-10"
+              onClick={() => navigate('/create-x-post')}
+            >
+              Create X post
             </Button>
           </motion.div>
         </motion.div>

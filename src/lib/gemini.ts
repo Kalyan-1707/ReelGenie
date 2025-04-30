@@ -5,7 +5,25 @@ export interface GeneratedFrame {
   transition: string;
 }
 
+export interface GeneratedFrame {
+  visual: string;
+  voiceover: string;
+  music: string;
+  transition: string;
+}
+
+export interface GeneratedThread {
+  thread_number: number;
+  tweet: string;
+  image_prompt: string;
+}
+
 export interface GeneratedScript {
+  title: string;
+  threads: GeneratedThread[];
+}
+
+export interface GeneratedFrameScript {
   title: string;
   duration: string;
   frames: GeneratedFrame[];

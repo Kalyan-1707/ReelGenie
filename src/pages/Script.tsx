@@ -1,8 +1,7 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import type { GeneratedScript } from "@/lib/gemini";
+import type { GeneratedFrameScript, GeneratedFrame } from "@/lib/gemini";
 import ScriptFrame from "@/components/ScriptFrame";
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 
@@ -13,7 +12,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext
  * and a section with the frames of the script. The frames are rendered as a list of ScriptFrame components.
  */
 const Script = () => {
-  const [generatedScript, setGeneratedScript] = useState<GeneratedScript | null>(null);
+  const [generatedScript, setGeneratedScript] = useState<GeneratedFrameScript | null>(null);
   const [generatedImages, setGeneratedImages] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
@@ -104,7 +103,7 @@ const Script = () => {
                   for (let i = 0; i < generatedScript.frames.length; i++) {
                     const frame = generatedScript.frames[i];
                     setStatusMessage(`Fetching image ${i + 1}/${generatedScript.frames.length}`);
-                    const response = await fetch('http://localhost:3000/api/generate-image', {
+                    const response = await fetch('/api/generate-image', {
                       method: 'POST',
                       headers: {
                         'Content-Type': 'application/json',

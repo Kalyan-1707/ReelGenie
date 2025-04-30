@@ -7,6 +7,8 @@ import Index from "./pages/Index";
 import Prompt from "./pages/Prompt";
 import Script from "./pages/Script";
 import NotFound from "./pages/NotFound";
+import CreateXPost from "./pages/CreateXPost";
+import Thread from "./pages/Thread";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +34,8 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/prompt" element={<Prompt />} />
           <Route path="/script" element={<Script />} />
+          <Route path="/create-x-post" element={<CreateXPost />} />
+          <Route path="/thread" element={<Thread />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
