@@ -1,34 +1,45 @@
-# UI Development Summary
+# UI Development Changes
 
-This file summarizes the UI-related changes made during the task of integrating the image generation endpoint into the frontend.
+## TweetThread Component
 
-## Components Modified
+- Created a new `TweetCard` component to display a single tweet with the following structure:
+    - Avatar (placeholder circle)
+    - Name and `@username · timestamp`
+    - Tweet text (supports multi-line and newlines)
+    - Optional image below text (if `imageUrl` is provided)
+    - Action bar at bottom: Icons: Reply (`MessageCircle`), Retweet (`Repeat`), Like (`Heart`), Share (`Share2`) from `lucide-react`
+- Created a new `TweetThread` component to display a list of `TweetCard` components in a vertical list.
 
-*   **src/pages/Script.tsx:**
-    *   Added state variables for `generatedImages`, `isLoading`, and `statusMessage`.
-    *   Modified the `onClick` handler of the "Generate Frames" button to:
-        *   Call the image generation API for each frame.
-        *   Decode the base64 images received from the API.
-        *   Update the `generatedImages` state variable.
-        *   Display a loading indicator and status messages during the image generation process.
-        *   Persist the generated images in local storage.
-    *   Implemented a carousel layout for the frames using the `Carousel`, `CarouselContent`, and `CarouselItem` components from `@/components/ui/carousel`.
-*   **src/components/ScriptFrame.tsx:**
-    *   Added a `generatedImage` prop to display the generated image for each frame.
-    *   Modified the component to take up the full width of its parent container.
-    *   Removed the zoom-in effect on hover.
-*   **src/components/ui/carousel.tsx:**
-    *   Enabled the `dragFree` option to allow navigation using the touch pad or mouse scroll.
+## Thread Page
 
-## Libraries Used
+- Created a new page `Thread.tsx` to display the generated tweet thread using the `TweetThread` component.
+- The page fetches the generated script from local storage and passes the thread data to the `TweetThread` component.
+- Added a back button to navigate back to the prompt page.
 
-*   `framer-motion`: For adding animations.
-*   `lucide-react`: For icons.
-*   `embla-carousel-react`: For implementing the carousel layout.
-*   `@/components/ui/*`: For UI components.
+## CreateXPost Page
 
-## Notes
+- Updated the `CreateXPost.tsx` component to redirect to the `/thread` page after generating the thread script.
+- Removed the `generatedScript` state from `CreateXPost.tsx`.
 
-*   The image generation API endpoint is assumed to be `http://localhost:3000/api/generate-image`.
-*   A 10-second delay is added between each API call to avoid rate limiting.
-*   The generated images are stored in local storage using the key `generatedImages`.
+## App Component
+
+- Updated the `App.tsx` to include a route for the `/thread` page.
+
+## Removed Components
+
+- Removed the `ScriptFrame` component.
+
+# Server Changes
+
+## New Endpoint: /generate-thread-script
+
+- Created a new endpoint `/generate-thread-script` in `server/routes/script.js` that generates multi-thread scripts based on the user's prompt.
+- The endpoint takes a prompt and the number of threads as input and returns a JSON object containing the title and the threads.
+
+## Updated Server Index
+
+- Updated the `server/index.js` file to use the new `/generate-thread-script` route.
+
+## Gemini Service
+
+- Updated the `server/services/gemini.js` file to include a `generateThreadScript` function that uses the correct prompt template for generating thread scripts.
