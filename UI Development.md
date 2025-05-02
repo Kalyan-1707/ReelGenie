@@ -29,6 +29,15 @@
 
 - Removed the `ScriptFrame` component.
 
+## Updated TweetThread Component
+
+- Modified the `TweetThread` component to use `react-tweet` library for better visuals.
+- Created `src/react-tweet.d.ts` to provide TypeScript types for `react-tweet`.
+- Replaced `TweetCard` with `TweetContainer`, `TweetHeader`, `TweetBody`, and `TweetActions` from `react-tweet`.
+- Added Tailwind CSS classes for layout and styling.
+- Addressed errors related to `react-tweet`'s internal tweet context by avoiding the use of `TweetHeader` and `TweetBody` and implementing a custom layout.
+- Updated the component to use `@kalyan_konudula` for the username, hardcode the language to English, and hide the like count as requested.
+
 # Server Changes
 
 ## New Endpoint: /generate-thread-script

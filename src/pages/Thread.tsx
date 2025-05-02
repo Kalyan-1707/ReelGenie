@@ -46,10 +46,11 @@ const Thread = () => {
 
   const tweets = generatedScript?.threads?.map((thread: GeneratedThread) => ({
     name: "ThreadGenie",
-    username: "threadgenie",
+    username: "kalyan_konudula",
     content: thread.tweet,
     timestamp: "2m",
     imageUrl: thread.image_prompt,
+    lang: "en",
   }));
   console.log("tweets data:", tweets);
 
