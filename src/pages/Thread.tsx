@@ -10,14 +10,65 @@ import TweetThread from "@/components/TweetThread";
  */
 const Thread = () => {
   const [generatedScript, setGeneratedScript] = useState<GeneratedScript | null>(null);
+  const [generatedImages, setGeneratedImages] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [statusMessage, setStatusMessage] = useState('');
+  const [isPublishing, setIsPublishing] = useState(false);
   const navigate = useNavigate();
+
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     const storedScript = localStorage.getItem('generatedScript');
     if (storedScript) {
       setGeneratedScript(JSON.parse(storedScript));
     }
+
+    const storedImages = localStorage.getItem('generatedThreadImages');
+    if (storedImages) {
+      setGeneratedImages(JSON.parse(storedImages));
+    }
   }, []);
+
+  useEffect(() => {
+    if (!generatedScript) return;
+
+    const fetchImages = async () => {
+      setIsLoading(true);
+      setStatusMessage('Fetching Images...');
+      const images: string[] = [];
+      for (let i = 0; i < generatedScript.threads.length; i++) {
+        const thread = generatedScript.threads[i];
+        setStatusMessage(`Fetching image ${i + 1}/${generatedScript.threads.length}`);
+        try {
+          const response = await fetch(`${backendUrl}/api/generate-image`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ prompt: thread.image_prompt }),
+          });
+
+          const data = await response.json();
+          images.push(`data:image/png;base64,${data.data[0].b64_json}`);
+        } catch (error) {
+          console.error("Error fetching image:", error);
+          images.push(""); // Push an empty string as a placeholder in case of error
+        }
+
+        // Delay for 10 seconds to avoid rate limiting
+        await new Promise(resolve => setTimeout(resolve, 10000));
+      }
+      setGeneratedImages(images);
+      localStorage.setItem('generatedThreadImages', JSON.stringify(images));
+      setIsLoading(false);
+      setStatusMessage('');
+    };
+
+    if (generatedImages.length === 0 && generatedScript.threads.length > 0) {
+      fetchImages();
+    }
+  }, [generatedScript, backendUrl, generatedImages]);
 
   /**
    * Navigate back to the prompt page.
@@ -26,33 +77,51 @@ const Thread = () => {
     navigate('/create-x-post');
   };
 
-  if (!generatedScript) {
-    return (
-      <main className="min-h-screen bg-background">
-        <div className="container mx-auto px-4 py-16">
-          <div className="text-center space-y-4">
-            <h2 className="text-2xl font-bold text-foreground">No script generated yet.</h2>
-            <Button 
-              onClick={handleBackToPrompt}
-              className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-all duration-300"
-            >
-              Back to Prompt
-            </Button>
-          </div>
-        </div>
-      </main>
-    );
-  }
+  const handlePublish = async () => {
+    setIsPublishing(true);
+    setStatusMessage("Publishing Tweets...");
+    try {
+      if (!generatedScript) return;
 
-  const tweets = generatedScript?.threads?.map((thread: GeneratedThread) => ({
+      for (let i = 0; i < generatedScript.threads.length; i++) {
+        const thread = generatedScript.threads[i];
+        setStatusMessage(`Publishing tweet ${i + 1}/${generatedScript.threads.length}`);
+
+        const response = await fetch(`${backendUrl}/api/postTweet`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            text: thread.tweet,
+            imageData: generatedImages[i]?.split(',')[1] || null, // Extract base64 data
+          }),
+        });
+
+        if (!response.ok) {
+          console.error("Error posting tweet:", response.statusText);
+        }
+
+        // Delay for 5 seconds between tweets
+        await new Promise(resolve => setTimeout(resolve, 5000));
+      }
+
+      setStatusMessage("Tweets published successfully!");
+    } catch (error) {
+      console.error("Error publishing tweets:", error);
+      setStatusMessage("Failed to publish tweets.");
+    } finally {
+      setIsPublishing(false);
+    }
+  };
+
+  const tweets = generatedScript?.threads?.map((thread: GeneratedThread, index) => ({
     name: "ThreadGenie",
     username: "kalyan_konudula",
     content: thread.tweet,
     timestamp: "2m",
-    imageUrl: thread.image_prompt,
-    lang: "en",
+    imageUrl: generatedImages[index] || "", // Use fetched image or empty string if not available
   }));
-  console.log("tweets data:", tweets);
 
   return (
     <main className="min-h-screen bg-background">
@@ -80,9 +149,25 @@ const Thread = () => {
           </div>
         </div>
 
+        {isLoading && (
+          <div className="w-full bg-gray-200 text-center py-2">
+            {statusMessage}
+          </div>
+        )}
+
         {/* Threads */}
         <div className="flex-1 relative">
           {tweets && <TweetThread tweets={tweets} />}
+        </div>
+
+        <div className="container mx-auto px-4 py-6">
+          <Button
+            disabled={isLoading || generatedImages.length === 0 || isPublishing}
+            onClick={handlePublish}
+            className="bg-gradient-to-r from-primary to-secondary hover:opacity-90"
+          >
+            {isPublishing ? statusMessage : "Publish to Twitter"}
+          </Button>
         </div>
       </section>
     </main>

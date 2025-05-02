@@ -21,15 +21,18 @@ const rwClient = twitterClient.readWrite;
 
 const postTweet = async (req, res) => {
   try {
-    const imagePath = path.join(__dirname, '../frame-1.jpeg');
-    const image = fs.readFileSync(imagePath);
-    const buffer = Buffer.from(image);
+    const { text, imageData } = req.body;
 
-    const mediaId = await rwClient.v1.uploadMedia(buffer, { mimeType: 'image/jpeg' });
+    // Upload media if imageData is provided
+    let mediaId;
+    if (imageData) {
+      const buffer = Buffer.from(imageData, 'base64');
+      mediaId = await rwClient.v1.uploadMedia(buffer, { mimeType: 'image/png' });
+    }
 
     const tweet = await rwClient.v2.tweet({
-      text: 'This is a test tweet with an image! 🚀',
-      media: { media_ids: [mediaId] }
+      text: text,
+      ...(mediaId && { media: { media_ids: [mediaId] } }), // Conditionally add media
     });
 
     res.status(200).send(tweet);
