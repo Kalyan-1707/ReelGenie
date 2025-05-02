@@ -78,6 +78,8 @@ const CreateXPost = () => {
    * @param data - The form data, including the user-provided prompt.
    */
   const onSubmit = async (data: ScriptFormData) => {
+    localStorage.removeItem('generatedScript');
+    localStorage.removeItem('generatedThreadImages');
     try {
       setIsLoading(true);
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/generate-thread-script`, {

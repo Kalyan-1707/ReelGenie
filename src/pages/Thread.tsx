@@ -115,13 +115,15 @@ const Thread = () => {
     }
   };
 
-  const tweets = generatedScript?.threads?.map((thread: GeneratedThread, index) => ({
-    name: "ThreadGenie",
-    username: "kalyan_konudula",
-    content: thread.tweet,
-    timestamp: "2m",
-    imageUrl: generatedImages[index] || "", // Use fetched image or empty string if not available
-  }));
+  const tweets = generatedScript?.threads?.length === generatedImages?.length
+    ? generatedScript?.threads?.map((thread: GeneratedThread, index) => ({
+      name: "ThreadGenie",
+      username: "kalyan_konudula",
+      content: thread.tweet,
+      timestamp: "2m",
+      imageUrl: generatedImages[index] || "", // Use fetched image or empty string if not available
+    }))
+    : [];
 
   return (
     <main className="min-h-screen bg-background">
