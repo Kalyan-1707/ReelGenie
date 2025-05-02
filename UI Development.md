@@ -55,6 +55,11 @@ When integrating API endpoints on the UI, the following steps should be followed
 7.  **Handle errors:** Display error messages to the user if the API call fails.
 8.  **Consider rate limiting:** Implement delays or other mechanisms to avoid rate limiting.
 
+## Thread Page Changes
+
+- Updated `src/pages/Thread.tsx` to call the `/api/postTweetThread` endpoint instead of `/api/postTweet`.
+- Updated `src/pages/Thread.tsx` to handle the new response format from the `/api/postTweetThread` endpoint and display the thread report to the user.
+
 # Server Changes
 
 ## New Endpoint: /generate-thread-script

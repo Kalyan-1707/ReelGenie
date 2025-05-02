@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { generateScriptRoute, generateImageRoute, generateThreadScriptRoute } from './routes/script.js';
-import postTweet from './routes/twitter.js';
+import { postTweet, postTweetThread } from './routes/twitter.js';
 
 dotenv.config();
 
@@ -30,13 +30,14 @@ app.use(cors(corsOptions));
 // Handle preflight
 app.options('*', cors(corsOptions));
 
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Routes
 app.use('/api', generateScriptRoute);
 app.use('/api', generateImageRoute);
 app.use('/api', generateThreadScriptRoute);
-app.use('/twitter', postTweet);
+app.post('/api/postTweetThread', postTweetThread);
 
 let server;
 if (process.env.NODE_ENV !== 'test') {

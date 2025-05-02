@@ -14,6 +14,7 @@ const Thread = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   const [isPublishing, setIsPublishing] = useState(false);
+  const [threadReport, setThreadReport] = useState<any[]>([]);
   const navigate = useNavigate();
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -83,33 +84,32 @@ const Thread = () => {
     try {
       if (!generatedScript) return;
 
-      for (let i = 0; i < generatedScript.threads.length; i++) {
-        const thread = generatedScript.threads[i];
-        setStatusMessage(`Publishing tweet ${i + 1}/${generatedScript.threads.length}`);
+      const tweets = generatedScript.threads.map((thread, index) => ({
+        text: thread.tweet,
+        imageData: generatedImages[index]?.split(',')[1] || null, // Extract base64 data
+      }));
 
-        const response = await fetch(`${backendUrl}/api/postTweet`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            text: thread.tweet,
-            imageData: generatedImages[i]?.split(',')[1] || null, // Extract base64 data
-          }),
-        });
+      const response = await fetch(`${backendUrl}/api/postTweetThread`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ tweets }),
+      });
 
-        if (!response.ok) {
-          console.error("Error posting tweet:", response.statusText);
-        }
+      const data = await response.json();
 
-        // Delay for 5 seconds between tweets
-        await new Promise(resolve => setTimeout(resolve, 5000));
+      if (!response.ok) {
+        console.error("Error posting tweet:", response.statusText);
+        setStatusMessage(`Failed to publish tweets: ${response.statusText}`);
+      } else {
+        setStatusMessage("Tweets published successfully!");
+        setThreadReport(data.threadReport);
       }
-
-      setStatusMessage("Tweets published successfully!");
     } catch (error) {
       console.error("Error publishing tweets:", error);
       setStatusMessage("Failed to publish tweets.");
+      setThreadReport([{ success: false, error: error.message }]);
     } finally {
       setIsPublishing(false);
     }
@@ -169,6 +169,20 @@ const Thread = () => {
             {isPublishing ? statusMessage : "Publish to Twitter"}
           </Button>
         </div>
+
+        {threadReport.length > 0 && (
+          <div className="container mx-auto px-4 py-6">
+            <h3 className="text-lg font-semibold text-foreground">Thread Report:</h3>
+            <ul>
+              {threadReport.map((report, index) => (
+                <li key={index} className="py-2">
+                  Tweet {report.index + 1}: {report.success ? "Success" : "Failed"}
+                  {report.error && <span className="text-red-500"> - {report.error}</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </section>
     </main>
   );
