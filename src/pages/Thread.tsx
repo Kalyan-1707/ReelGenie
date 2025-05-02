@@ -128,28 +128,46 @@ const Thread = () => {
   return (
     <main className="min-h-screen bg-background">
       <section className="h-screen flex flex-col">
-        {/* Script Info */}
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex justify-between items-center gap-4 flex-wrap">
-            <div>
-              <h2 className="text-2xl font-bold text-foreground">
+        {/* Action Bar */}
+        <div className="container mx-auto py-3 px-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-2">
+            <Button
+              variant="outline"
+              onClick={handleBackToPrompt}
+              className="group transition-all duration-300 hover:bg-primary/10 hover:text-primary border-primary/20"
+            >
+              <span className="mr-2 transform group-hover:-translate-x-1 transition-transform">←</span>
+              Back to Prompt
+            </Button>
+            <div className="text-center w-full md:w-auto">
+              <h1 className="text-xl font-semibold text-gray-800 dark:text-white">
                 {generatedScript?.title}
-              </h2>
+              </h1>
             </div>
-
-            {/* Navigation Buttons */}
-            <div className="flex gap-4">
-              <Button
-                variant="outline"
-                onClick={handleBackToPrompt}
-                className="group transition-all duration-300 hover:bg-primary/10 hover:text-primary border-primary/20"
-              >
-                <span className="mr-2 transform group-hover:-translate-x-1 transition-transform">←</span>
-                Back to Prompt
-              </Button>
-            </div>
+            <Button
+              disabled={isLoading || generatedImages.length === 0 || isPublishing}
+              onClick={handlePublish}
+              className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 rounded-xl text-lg"
+            >
+              {isPublishing ? statusMessage : "Publish to Twitter"}
+            </Button>
           </div>
         </div>
+
+        {/* Generation Logs */}
+        {threadReport.length > 0 && (
+          <div className="container mx-auto px-4 py-6 bg-white rounded-xl border shadow-sm">
+            <h3 className="text-lg font-semibold text-foreground">Generation Logs</h3>
+            <pre className="max-h-[300px] overflow-auto">
+              {threadReport.map((report, index) => (
+                <div key={index}>
+                  Tweet {report.index + 1}: {report.success ? "Success" : "Failed"}
+                  {report.error && <span className="text-red-500"> - {report.error}</span>}
+                </div>
+              ))}
+            </pre>
+          </div>
+        )}
 
         {isLoading && (
           <div className="w-full bg-gray-200 text-center py-2">
@@ -158,33 +176,9 @@ const Thread = () => {
         )}
 
         {/* Threads */}
-        <div className="flex-1 relative">
-          {tweets && <TweetThread tweets={tweets} />}
-        </div>
-
         <div className="container mx-auto px-4 py-6">
-          <Button
-            disabled={isLoading || generatedImages.length === 0 || isPublishing}
-            onClick={handlePublish}
-            className="bg-gradient-to-r from-primary to-secondary hover:opacity-90"
-          >
-            {isPublishing ? statusMessage : "Publish to Twitter"}
-          </Button>
+          <TweetThread tweets={tweets} />
         </div>
-
-        {threadReport.length > 0 && (
-          <div className="container mx-auto px-4 py-6">
-            <h3 className="text-lg font-semibold text-foreground">Thread Report:</h3>
-            <ul>
-              {threadReport.map((report, index) => (
-                <li key={index} className="py-2">
-                  Tweet {report.index + 1}: {report.success ? "Success" : "Failed"}
-                  {report.error && <span className="text-red-500"> - {report.error}</span>}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
       </section>
     </main>
   );

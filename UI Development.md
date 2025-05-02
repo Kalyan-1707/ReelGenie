@@ -59,6 +59,9 @@ When integrating API endpoints on the UI, the following steps should be followed
 
 - Updated `src/pages/Thread.tsx` to call the `/api/postTweetThread` endpoint instead of `/api/postTweet`.
 - Updated `src/pages/Thread.tsx` to handle the new response format from the `/api/postTweetThread` endpoint and display the thread report to the user.
+- Refactored the `Thread` page layout to include a top header bar with a centered title and a responsive design.
+- The header bar now uses `flex` and absolute positioning to ensure the title is always centered, even on mobile.
+- The `TweetThread` component is now displayed below the header bar and generation logs.
 
 # Server Changes
 
