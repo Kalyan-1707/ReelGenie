@@ -1,5 +1,4 @@
 import React from 'react';
-import { TweetContainer } from 'react-tweet';
 
 type Tweet = {
   name: string;
@@ -16,36 +15,33 @@ type TweetThreadProps = {
 const TweetThread: React.FC<TweetThreadProps> = ({ tweets }) => {
   return (
     <div className="max-w-xl mx-auto">
-      <div className="space-y-4">
+      <div className="space-y-4 rounded-xl p-4 bg-white dark:bg-gray-50 shadow-md dark:shadow-lg border border-gray-200 dark:border-gray-700">
         {tweets.map((tweet, index) => (
-          <TweetContainer key={index}>
-            <div className="rounded-xl p-4 shadow-md bg-white dark:bg-gray-800 space-y-2">
+            <div key={index} className="space-y-2">
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 bg-gray-300 rounded-full" /> {/* Placeholder Avatar */}
+                <img
+                  src="/profile.jpeg"
+                  alt="Profile"
+                  className="w-10 h-10 rounded-full object-cover"
+                />
                 <div>
-                  <div className="font-semibold text-sm">
+                  <div className="font-semibold text-sm dark:text-white">
                     {tweet.name}
-                    <span className="text-gray-500 ml-1">@{tweet.username} · {tweet.timestamp}</span>
+                    <span className="text-gray-500 ml-1 dark:text-gray-400">@{tweet.username} · {tweet.timestamp}</span>
                   </div>
-                  <p className="mt-1 text-gray-800 dark:text-gray-200 whitespace-pre-wrap">
+                  <p className="mt-1 text-gray-800 dark:text-gray-300 whitespace-pre-wrap leading-relaxed">
                     {tweet.content}
                   </p>
                   {tweet.imageUrl && (
                     <img
                       src={tweet.imageUrl}
                       alt="Tweet visual"
-                      className="rounded-lg mt-2 w-full object-cover max-h-96"
+                      className="rounded-xl mt-2 w-full object-cover max-h-[500px]"
                     />
                   )}
                 </div>
               </div>
-
-              {/* Optional Actions Bar */}
-              <div className="flex gap-6 text-gray-500 text-sm mt-3">
-                {/* You can use lucide-react or icons here */}
-              </div>
             </div>
-          </TweetContainer>
         ))}
       </div>
     </div>

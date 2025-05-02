@@ -118,7 +118,7 @@ const Thread = () => {
   const tweets = generatedScript?.threads?.length === generatedImages?.length
     ? generatedScript?.threads?.map((thread: GeneratedThread, index) => ({
       name: "ThreadGenie",
-      username: "kalyan_konudula",
+      username: "ThreadGenieAI",
       content: thread.tweet,
       timestamp: "2m",
       imageUrl: generatedImages[index] || "", // Use fetched image or empty string if not available
