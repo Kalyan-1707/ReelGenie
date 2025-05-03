@@ -10,7 +10,7 @@ import TweetThread from "@/components/TweetThread";
  */
 const Thread = () => {
   const [generatedScript, setGeneratedScript] = useState<GeneratedScript | null>(null);
-  const [generatedImages, setGeneratedImages] = useState<string[]>([]);
+  const [generatedImages, setGeneratedImages] = useState<(string | null)[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   const [isPublishing, setIsPublishing] = useState(false);
@@ -37,7 +37,9 @@ const Thread = () => {
     const fetchImages = async () => {
       setIsLoading(true);
       setStatusMessage('Fetching Images...');
-      const images: string[] = [];
+      const images: (string | null)[] = Array(generatedScript.threads.length).fill(null);
+      setGeneratedImages(images);
+
       for (let i = 0; i < generatedScript.threads.length; i++) {
         const thread = generatedScript.threads[i];
         setStatusMessage(`Fetching image ${i + 1}/${generatedScript.threads.length}`);
@@ -51,25 +53,33 @@ const Thread = () => {
           });
 
           const data = await response.json();
-          images.push(`data:image/png;base64,${data.data[0].b64_json}`);
+          const imageData = `data:image/png;base64,${data.data[0].b64_json}`;
+
+          setGeneratedImages((prev) => {
+            const updated = [...prev];
+            updated[i] = imageData;
+            return updated;
+          });
         } catch (error) {
           console.error("Error fetching image:", error);
-          images.push(""); // Push an empty string as a placeholder in case of error
+          setGeneratedImages((prev) => {
+            const updated = [...prev];
+            updated[i] = null;
+            return updated;
+          });
         }
 
         // Delay for 10 seconds to avoid rate limiting
         await new Promise(resolve => setTimeout(resolve, 10000));
       }
-      setGeneratedImages(images);
-      localStorage.setItem('generatedThreadImages', JSON.stringify(images));
       setIsLoading(false);
       setStatusMessage('');
     };
 
-    if (generatedImages.length === 0 && generatedScript.threads.length > 0) {
+    if (generatedScript.threads.length > 0) {
       fetchImages();
     }
-  }, [generatedScript, backendUrl, generatedImages]);
+  }, [generatedScript, backendUrl]);
 
   /**
    * Navigate back to the prompt page.
@@ -115,15 +125,13 @@ const Thread = () => {
     }
   };
 
-  const tweets = generatedScript?.threads?.length === generatedImages?.length
-    ? generatedScript?.threads?.map((thread: GeneratedThread, index) => ({
-      name: "ThreadGenie",
-      username: "ThreadGenieAI",
-      content: thread.tweet,
-      timestamp: "2m",
-      imageUrl: generatedImages[index] || "", // Use fetched image or empty string if not available
-    }))
-    : [];
+  const tweets = generatedScript?.threads?.map((thread: GeneratedThread, index) => ({
+    name: "ThreadGenie",
+    username: "ThreadGenieAI",
+    content: thread.tweet,
+    timestamp: "2m",
+    imageUrl: generatedImages[index] ?? null
+  })) || [];
 
   return (
     <main className="min-h-screen bg-background">

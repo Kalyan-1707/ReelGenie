@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Skeleton } from "@/components/ui/skeleton"
 
 type Tweet = {
   name: string;
@@ -33,11 +34,7 @@ const TweetThread: React.FC<TweetThreadProps> = ({ tweets }) => {
                     {tweet.content}
                   </p>
                   {tweet.imageUrl && (
-                    <img
-                      src={tweet.imageUrl}
-                      alt="Tweet visual"
-                      className="rounded-xl mt-2 w-full object-cover max-h-[500px]"
-                    />
+                    <TweetImage imageUrl={tweet.imageUrl} />
                   )}
                 </div>
               </div>
@@ -45,6 +42,38 @@ const TweetThread: React.FC<TweetThreadProps> = ({ tweets }) => {
         ))}
       </div>
     </div>
+  );
+};
+
+const TweetImage = ({ imageUrl }: { imageUrl: string }) => {
+  const [isImageLoaded, setImageLoaded] = useState(false);
+
+  useEffect(() => {
+    if (!imageUrl) return;
+
+    const img = new Image();
+    img.src = imageUrl;
+    img.onload = () => setImageLoaded(true);
+  }, [imageUrl]);
+
+  if (!imageUrl) {
+    return <Skeleton className="w-full h-64 rounded-xl mt-2" />;
+  }
+
+  return (
+    <>
+      {!isImageLoaded && (
+        <Skeleton className="w-full h-64 rounded-xl mt-2" />
+      )}
+      <img
+        src={imageUrl}
+        alt="Tweet visual"
+        onLoad={() => setImageLoaded(true)}
+        className={`rounded-xl mt-2 w-full object-cover max-h-[500px] transition-opacity duration-500 ${
+          isImageLoaded ? 'opacity-100' : 'opacity-0 absolute'
+        }`}
+      />
+    </>
   );
 };
 

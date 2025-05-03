@@ -63,6 +63,13 @@ When integrating API endpoints on the UI, the following steps should be followed
 - The header bar now uses `flex` and absolute positioning to ensure the title is always centered, even on mobile.
 - The `TweetThread` component is now displayed below the header bar and generation logs.
 
+## CreateXPost Page Changes
+
+- Replaced the number input for thread count with a range slider.
+- Styled the range slider to match the app's purple theme.
+- Added custom CSS to `src/index.css` to style the range slider thumb.
+- Fixed TypeScript errors related to `useNavigate` hook.
+
 # Server Changes
 
 ## New Endpoint: /generate-thread-script
