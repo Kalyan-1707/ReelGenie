@@ -65,10 +65,10 @@ const exampleTemplates = [
 const CreateXPost = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-
   const form = useForm<ScriptFormData>({
     defaultValues: {
       prompt: "",
+      threadCount: 1,
     },
   });
 
@@ -113,7 +113,7 @@ const CreateXPost = () => {
     <main className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 relative overflow-hidden">
       {/* Animated background */}
       <div className="absolute inset-0 bg-grid-white/10 bg-grid-pattern" />
-      
+
       <div className="container mx-auto px-4 py-16 relative z-10">
         {/* Hero Section */}
         <motion.div
@@ -140,75 +140,79 @@ const CreateXPost = () => {
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <div className="mb-4">
-<div className="grid w-full max-w-sm items-center gap-1.5">
-                <Label htmlFor="threadCount">Number of Threads (1-8)</Label>
-                <FormField
-                  control={form.control}
-                  name="threadCount"
-                  rules={{
-                    required: "Please enter the number of threads",
-                    min: {
-                      value: 1,
-                      message: "Number of threads must be at least 1",
-                    },
-                    max: {
-                      value: 8,
-                      message: "Number of threads must be at most 8",
-                    },
-                  }}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          id="threadCount"
-                          type="number"
-                          min="1"
-                          max="8"
-                          defaultValue={1}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+                <div className="grid w-full max-w-sm items-center gap-1.5 mt-4 mb-6">
+                  <Label htmlFor="threadCount">Number of Threads (1-8): {form.watch("threadCount")}</Label>
+                  <FormField
+                    control={form.control}
+                    name="threadCount"
+                    rules={{
+                      required: "Please enter the number of threads",
+                      min: {
+                        value: 1,
+                        message: "Number of threads must be at least 1",
+                      },
+                      max: {
+                        value: 8,
+                        message: "Number of threads must be at most 8",
+                      },
+                    }}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <input
+                            id="threadCount"
+                            type="range"
+                            min="1"
+                            max="8"
+                            step="1"
+                            defaultValue="1"
+                            className="w-full h-2 bg-purple-200 rounded-full appearance-none cursor-pointer"
+                            style={{
+                              WebkitAppearance: 'none',
+                            }}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
                 <FormField
                   control={form.control}
                   name="prompt"
                   rules={{
                     required: "Please enter a prompt",
-                  minLength: {
-                    value: 10,
-                    message: "Prompt must be at least 10 characters"
-                  },
-                  maxLength: {
-                    value: 280,
-                    message: "Prompt must not exceed 280 characters"
-                  }
-                }}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <motion.div
-                        whileFocus={{ scale: 1.02 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <Textarea
-                          placeholder="Write a scene idea like 'A girl stands alone on a rooftop at sunset'..."
-                          className="min-h-[200px] mb-2 bg-white/50 backdrop-blur-sm border-2 border-primary/20 rounded-xl focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-300"
-                          {...field}
-                          defaultValue="A girl stands alone on a rooftop at sunset"
-                        />
-                      </motion.div>
-                    </FormControl>
-                    <div className="text-sm text-gray-500 mb-2">
-                      {field.value.length}/280 characters
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                    minLength: {
+                      value: 10,
+                      message: "Prompt must be at least 10 characters"
+                    },
+                    maxLength: {
+                      value: 280,
+                      message: "Prompt must not exceed 280 characters"
+                    }
+                  }}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <motion.div
+                          whileFocus={{ scale: 1.02 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <Textarea
+                            placeholder="Write a scene idea like 'A girl stands alone on a rooftop at sunset'..."
+                            className="min-h-[200px] mb-2 bg-white/50 backdrop-blur-sm border-2 border-primary/20 rounded-xl focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-300"
+                            {...field}
+                          />
+                        </motion.div>
+                      </FormControl>
+                      <div className="text-sm text-gray-500 mb-2">
+                        {field.value.length}/280 characters
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
 
               <motion.div
