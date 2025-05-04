@@ -103,7 +103,7 @@ const Script = () => {
                   for (let i = 0; i < generatedScript.frames.length; i++) {
                     const frame = generatedScript.frames[i];
                     setStatusMessage(`Fetching image ${i + 1}/${generatedScript.frames.length}`);
-                    const response = await fetch('/api/generate-image', {
+                    const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/api/generate-image', {
                       method: 'POST',
                       headers: {
                         'Content-Type': 'application/json',
